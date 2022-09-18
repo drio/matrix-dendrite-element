@@ -1,0 +1,27 @@
+version: '3'
+services:
+  dendrite:
+    container_name: dendrite
+    image: docker.io/matrixdotorg/dendrite-monolith:latest
+    restart: unless-stopped
+    environment:
+      - FOO="bar"
+    volumes:
+      - ./mnt:/etc/dendrite
+    ports:
+      - 8008:8008/tcp
+      - 8448:8448/tcp
+
+  element:
+    container_name: element
+    image: vectorim/element-web
+    restart: unless-stopped
+    depends_on:
+      - dendrite
+    environment:
+      - FOO="bar"
+    volumes:
+      - ./mnt:/etc/dendrite
+    ports:
+      - 8888:80/tcp
+
